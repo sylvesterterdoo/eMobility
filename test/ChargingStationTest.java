@@ -17,7 +17,7 @@ public class ChargingStationTest {
         LocalDateTime time = LocalDateTime.of(2020, 12, 15, 12, 10, 20);
 
         Tenant tenant = new Tenant("eMobility");
-        tenant.addStore(new Store());
+        tenant.addStore(new Store(tenant));
         boolean result = getStoreChargingStation(tenant, StationType.CUSTOMER).
                 isChargingStationOpenDuring(Timestamp.valueOf(time));
         Assert.assertFalse(result);
@@ -29,7 +29,7 @@ public class ChargingStationTest {
         LocalDateTime time = LocalDateTime.of(2020, 12, 23, 12, 30, 20);
 
         Tenant tenant = new Tenant("eMobility");
-        tenant.addStore(new Store());
+        tenant.addStore(new Store(tenant));
         boolean result = getStoreChargingStation(tenant, StationType.CUSTOMER).
                 isChargingStationOpenDuring(Timestamp.valueOf(time));
         Assert.assertTrue(result);
@@ -41,7 +41,7 @@ public class ChargingStationTest {
 
         LocalDateTime time = LocalDateTime.of(2020, 12, 15, 12, 10, 20);
         Tenant tenant = new Tenant("eMobility");
-        tenant.addStore(new Store());
+        tenant.addStore(new Store(tenant));
         boolean result = getStoreChargingStation(tenant, StationType.EMPLOYEE).
                 isChargingStationOpenDuring(Timestamp.valueOf(time));
 
@@ -53,7 +53,7 @@ public class ChargingStationTest {
 
         LocalDateTime time = LocalDateTime.of(2020, 12, 23, 16, 30, 20);
         Tenant tenant = new Tenant("eMobility");
-        tenant.addStore(new Store());
+        tenant.addStore(new Store(tenant));
         boolean result = getStoreChargingStation(tenant, StationType.EMPLOYEE).
                 isChargingStationOpenDuring(Timestamp.valueOf(time));
 
@@ -65,7 +65,7 @@ public class ChargingStationTest {
 
         LocalDateTime time = LocalDateTime.of(2020, 12, 23, 6, 30, 20);
         Tenant tenant = new Tenant("eMobility");
-        tenant.addStore(new Store());
+        tenant.addStore(new Store(tenant));
         boolean result = getStoreChargingStation(tenant, StationType.EMPLOYEE).
                 isChargingStationOpenDuring(Timestamp.valueOf(time));
 
@@ -77,7 +77,7 @@ public class ChargingStationTest {
 
         LocalDateTime time = LocalDateTime.of(2020, 12, 23, 23, 30, 20);
         Tenant tenant = new Tenant("eMobility");
-        tenant.addStore(new Store());
+        tenant.addStore(new Store(tenant));
         boolean result = getStoreChargingStation(tenant, StationType.MANAGER).
                 isChargingStationOpenDuring(Timestamp.valueOf(time));
 
@@ -89,7 +89,7 @@ public class ChargingStationTest {
         LocalDateTime time = LocalDateTime.of(2020, 12, 15, 12, 10, 20);
 
         Tenant tenant = new Tenant("eMobility");
-        tenant.addStore(new Store());
+        tenant.addStore(new Store(tenant));
 
         LocalDate from = LocalDate.of(2020, 12, 15);
         LocalDate to = LocalDate.of(2020, 12, 15);
@@ -111,7 +111,7 @@ public class ChargingStationTest {
         LocalDateTime time = LocalDateTime.of(2020, 12, 23, 12, 30, 20);
 
         Tenant tenant = new Tenant("eMobility");
-        tenant.addStore(new Store());
+        tenant.addStore(new Store(tenant));
 
         LocalDate from = LocalDate.of(2020, 12, 23);
         LocalDate to = LocalDate.of(2020, 12, 25);
@@ -126,10 +126,9 @@ public class ChargingStationTest {
         Assert.assertFalse(result);
     }
 
-
-
+    
     private static ChargingStation getStoreChargingStation(Tenant tenant, StationType stationType) {
-        return new ChargingStation(tenant.stores.get(0).getStoreNumber(), stationType);
+        return new ChargingStation(tenant.stores.get(0), stationType);
     }
 
 }
