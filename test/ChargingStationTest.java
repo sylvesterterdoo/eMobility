@@ -114,7 +114,7 @@ public class ChargingStationTest {
         tenant.addStore(new Store(tenant));
 
         LocalDate from = LocalDate.of(2020, 12, 23);
-        LocalDate to = LocalDate.of(2020, 12, 25);
+        LocalDate to = LocalDate.of(2020, 12, 23);
         TimeSpan timeSpan = new TimeSpan(LocalTime.of(9, 00), LocalTime.of(16, 00));
 
         Exception chargingStationException = new Exception(from, to, timeSpan, ExceptionType.CLOSE);
@@ -126,7 +126,49 @@ public class ChargingStationTest {
         Assert.assertFalse(result);
     }
 
-    
+    @Test
+    public void employeeCheckStationStoreClosedExceptionWithinASpecifiedRange() {
+
+        LocalDateTime time = LocalDateTime.of(2020, 6, 3, 12, 30, 20);
+
+        LocalDate from = LocalDate.of(2020, 6, 1);
+        LocalDate to = LocalDate.of(2020, 6, 5);
+        TimeSpan timeSpan = new TimeSpan(LocalTime.of(6, 00), LocalTime.of(18, 00));
+
+        Exception storeException = new Exception(from, to, timeSpan, ExceptionType.CLOSE);
+
+        Tenant tenant = new Tenant("eMobility");
+        Store store = new Store(tenant);
+        store.addException(storeException);
+        tenant.addStore(store);
+
+        ChargingStation chargingStation = getStoreChargingStation(tenant, StationType.CUSTOMER);
+
+        boolean result = chargingStation.isChargingStationOpenDuring(Timestamp.valueOf(time));
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void employeeCheckStationTenantClosedExceptionWithinASpecifiedRange() {
+        // double check.
+        LocalDateTime time = LocalDateTime.of(2020, 5, 2, 1, 30, 20);
+
+        LocalDate from = LocalDate.of(2020, 5, 1);
+        LocalDate to = LocalDate.of(2020, 5, 2);
+        TimeSpan timeSpan = new TimeSpan(LocalTime.of(0, 00), LocalTime.of(0, 00));
+
+        Exception tenantException = new Exception(from, to, timeSpan, ExceptionType.CLOSE);
+
+        Tenant tenant = new Tenant("eMobility");
+        tenant.addException(tenantException);
+        tenant.addStore(new Store(tenant));
+
+        ChargingStation chargingStation = getStoreChargingStation(tenant, StationType.CUSTOMER);
+
+        boolean result = chargingStation.isChargingStationOpenDuring(Timestamp.valueOf(time));
+        Assert.assertFalse(result);
+    }
+
     private static ChargingStation getStoreChargingStation(Tenant tenant, StationType stationType) {
         return new ChargingStation(tenant.stores.get(0), stationType);
     }
