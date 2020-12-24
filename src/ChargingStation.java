@@ -14,19 +14,18 @@ public class ChargingStation {
     private static int instanceCounter = 0;
 
     private int chargingStationNumber;
-    private int storeNumber;
+    private Store store;
     private StationType stationType;
     private Map<ExceptionType, List<Exception>> exceptions;
     private Map<DayOfWeek, List<TimeSpan>> openingTimeSchedule;
 
-    public ChargingStation(int storeNumber, StationType stationType) {
-        this.storeNumber = storeNumber;
+    public ChargingStation(Store store, StationType stationType) {
+        this.store = store;
         this.stationType = stationType;
 
         Map<ExceptionType, List<Exception>> exceptions = new HashMap<>();
         exceptions.put(ExceptionType.OPEN, new LinkedList<>());
         exceptions.put(ExceptionType.CLOSE, new LinkedList<>());
-
 
         this.exceptions = exceptions;
 
@@ -57,6 +56,14 @@ public class ChargingStation {
         if (isExpectionsBetween(exceptions.get(ExceptionType.CLOSE), dateTime)) {
             return false;
         } else if (isExpectionsBetween(exceptions.get(ExceptionType.OPEN), dateTime)) {
+            return true;
+        } else if (isExpectionsBetween(store.getExceptions().get(ExceptionType.CLOSE), dateTime)){
+            return false;
+        } else if (isExpectionsBetween(store.getExceptions().get(ExceptionType.OPEN), dateTime)) {
+            return true;
+        } else if (isExpectionsBetween(store.getTenant().getExceptions().get(ExceptionType.CLOSE), dateTime)){
+            return false;
+        } else if (isExpectionsBetween(store.getTenant().getExceptions().get(ExceptionType.OPEN), dateTime)) {
             return true;
         } else {
             return isOpeningHoursInSchedule(dateTime.toLocalTime(), dateTime.getDayOfWeek());
