@@ -45,7 +45,7 @@ public class Exception {
     }
 
     /**
-     * Checks weather a LocalDateTime is withing the list of exception
+     * Checks whether a LocalDateTime is withing the list of exception
      * @param exceptions
      * @param dateTime
      * @return true if the dateTime is in the list of exceptions.

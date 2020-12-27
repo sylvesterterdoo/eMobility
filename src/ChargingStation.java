@@ -61,7 +61,7 @@ public class ChargingStation {
     }
 
     /**
-     * Checks weather a Charging station is open
+     * Checks whether a Charging station is open
      * @param timestamp
      * @return a true if Charging station is open
      */
