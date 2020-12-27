@@ -1,4 +1,8 @@
-import java.time.LocalDate;
+/**
+ * File: TestSpan.java
+ * This class models a timespan
+ */
+
 import java.time.LocalTime;
 
 public class TimeSpan {

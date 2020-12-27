@@ -4,7 +4,9 @@
  */
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 enum ExceptionType {
     OPEN,
@@ -38,6 +40,25 @@ public class Exception {
         if ((localTime.compareTo(timeSpan.getFrom())) >= 0 &&
                 (localTime.compareTo(timeSpan.getTo()) < 0)) {
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks weather a LocalDateTime is withing the list of exception
+     * @param exceptions
+     * @param dateTime
+     * @return true if the dateTime is in the list of exceptions.
+     */
+    public static boolean isExceptionBetween(List<Exception> exceptions, LocalDateTime dateTime) {
+        LocalDate date = dateTime.toLocalDate();
+        LocalTime time = dateTime.toLocalTime();
+        for(Exception exception: exceptions) {
+            if (exception.isDateBetween(date)) {
+                if (exception.isTimeBetween(time)) {
+                    return true;
+                }
+            }
         }
         return false;
     }

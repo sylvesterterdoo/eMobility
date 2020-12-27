@@ -68,18 +68,17 @@ public class ChargingStation {
     public boolean isChargingStationOpenDuring(Timestamp timestamp) {
         LocalDateTime dateTime = timestamp.toLocalDateTime();
 
-        // check the exceptions for the store and the tenant before checking the schedule.
-        if (isExpectionsBetween(exceptions.get(ExceptionType.CLOSE), dateTime)) {
+        if (Exception.isExceptionBetween(exceptions.get(ExceptionType.CLOSE), dateTime)) {
             return false;
-        } else if (isExpectionsBetween(exceptions.get(ExceptionType.OPEN), dateTime)) {
+        } else if (Exception.isExceptionBetween(exceptions.get(ExceptionType.OPEN), dateTime)) {
             return true;
-        } else if (isExpectionsBetween(store.getExceptions().get(ExceptionType.CLOSE), dateTime)){
+        } else if (Exception.isExceptionBetween(store.getExceptions().get(ExceptionType.CLOSE), dateTime)){
             return false;
-        } else if (isExpectionsBetween(store.getExceptions().get(ExceptionType.OPEN), dateTime)) {
+        } else if (Exception.isExceptionBetween(store.getExceptions().get(ExceptionType.OPEN), dateTime)) {
             return true;
-        } else if (isExpectionsBetween(store.getTenant().getExceptions().get(ExceptionType.CLOSE), dateTime)){
+        } else if (Exception.isExceptionBetween(store.getTenant().getExceptions().get(ExceptionType.CLOSE), dateTime)){
             return false;
-        } else if (isExpectionsBetween(store.getTenant().getExceptions().get(ExceptionType.OPEN), dateTime)) {
+        } else if (Exception.isExceptionBetween(store.getTenant().getExceptions().get(ExceptionType.OPEN), dateTime)) {
             return true;
         } else {
             return isOpeningHoursInSchedule(dateTime.toLocalTime(), dateTime.getDayOfWeek());
@@ -237,21 +236,6 @@ public class ChargingStation {
             }
             return false;
         });
-    }
-
-
-    // move method to exception class
-    private boolean isExpectionsBetween(List<Exception> exceptions, LocalDateTime dateTime) {
-        LocalDate date = dateTime.toLocalDate();
-        LocalTime time = dateTime.toLocalTime();
-        for(Exception exception: exceptions) {
-            if (exception.isDateBetween(date)) {
-                if (exception.isTimeBetween(time)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
 

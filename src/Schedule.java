@@ -114,7 +114,7 @@ public class Schedule {
     }
 
 
-    /** Set the Timespan of multiple week days */
+    /** Set the TimeSpan of multiple week days */
     private void setTimeSpanOfWeekDays(List<TimeSpan> times, List<DayOfWeek> weekDays) {
         for (DayOfWeek day : weekDays)
         {
