@@ -1,3 +1,7 @@
+/**
+ *  File: Schedule.java
+ *  This class models a Charging station Schedule
+ */
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.*;
@@ -93,7 +97,7 @@ public class Schedule {
                 schedule.get(DayOfWeek.SATURDAY).add(new TimeSpan(from, to));
 
                 break;
-            case MANAGER:
+            case MANAGER:   // configure charging stations only accessible to store Manager.
                 // set the time for saturday
                 from = LocalTime.MIDNIGHT;
                 to   = LocalTime.MAX;
@@ -102,10 +106,6 @@ public class Schedule {
                 daysOfWeek.addAll(Arrays.asList(DayOfWeek.values()));
                 setTimeSpanOfWeekDays(timeSpans, daysOfWeek);
 
-                // configure charging stations that are part (e.g shopping malls)
-                // the opening and closing hours might look different to accommodate the shopping mall opening hour
-                // with the above, it should also be possible to define exceptions for defined periods between
-                // two concrete point in time.
                 break;
             default:
                 break;
@@ -114,7 +114,7 @@ public class Schedule {
     }
 
 
-    /* Helper method that set the timespan of multiple week days */
+    /** Set the Timespan of multiple week days */
     private void setTimeSpanOfWeekDays(List<TimeSpan> times, List<DayOfWeek> weekDays) {
         for (DayOfWeek day : weekDays)
         {

@@ -1,3 +1,8 @@
+/**
+ * File: Store.java
+ * This class models the Store entity
+ */
+
 import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,10 +39,17 @@ public class Store {
         return tenant;
     }
 
+    /**
+     * @return the store exceptions
+     */
     public Map<ExceptionType, List<Exception>> getExceptions() {
         return exceptions;
     }
 
+    /**
+     * Adds a new exception to the store
+     * @param exception
+     */
     public void addException(Exception exception) {
         Utilities.addExceptions(exception, this.exceptions);
     }

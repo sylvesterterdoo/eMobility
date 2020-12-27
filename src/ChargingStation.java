@@ -1,3 +1,9 @@
+
+/**
+ * File: ChargingStation.java
+ * This class models the ChargingStation entity.
+ */
+
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.*;
@@ -38,14 +44,27 @@ public class ChargingStation {
         return schedule.getSchedule();
     }
 
+
+    /**
+     * @return the ChargingStation exceptions
+     */
     public Map<ExceptionType, List<Exception>> getExceptions() {
         return exceptions;
     }
 
+    /**
+     * Adds a new exception to the ChargingStation
+     * @param exception
+     */
     public void addException(Exception exception) {
         Utilities.addExceptions(exception, this.exceptions);
     }
 
+    /**
+     * Checks weather a Charging station is open
+     * @param timestamp
+     * @return a true if Charging station is open
+     */
     public boolean isChargingStationOpenDuring(Timestamp timestamp) {
         LocalDateTime dateTime = timestamp.toLocalDateTime();
 
@@ -67,6 +86,11 @@ public class ChargingStation {
         }
     }
 
+    /**
+     * Check when the next open/closed status will change given a timestamp
+     * @param timestamp
+     * @return a timestamp indicating this time.
+     */
     public Timestamp nextOpenClosedStatusChange(Timestamp timestamp) {
         LocalDateTime dateTime = timestamp.toLocalDateTime();
 
@@ -97,7 +121,7 @@ public class ChargingStation {
     }
 
 
-    /* Helper method that convert a given LocalTime and Localdate to Timestamp */
+    /** Convert a given LocalTime and Localdate to Timestamp */
     private Timestamp convertLocalTimeToTimestamp(LocalTime time, LocalDateTime dateTime) {
         Instant instant = time.atDate(dateTime.toLocalDate())
                 .atZone(ZoneId.systemDefault()).toInstant();
@@ -106,7 +130,7 @@ public class ChargingStation {
     }
 
 
-    /** Helper method that checks the opening times from a station schedule
+    /** Checks the opening times from a station schedule
      * given a LocalTime and DayOfWeek */
     private boolean isOpeningHoursInSchedule(LocalTime checkTime, DayOfWeek weekDay) {
         return checkTime.query(temporal -> {
@@ -121,6 +145,7 @@ public class ChargingStation {
         });
     }
 
+    /** Checks when the next open/closed status will change given a list of exceptions */
     private Timestamp dateStatusChange(List<Exception> exceptions, LocalDateTime checkDateTime) {
 
         LocalDateTime nextDateTime = checkDateTime.plusDays(1);
@@ -138,7 +163,7 @@ public class ChargingStation {
         return null;
     }
 
-
+    /** Get the appropriate next time from an exception give a specific LocalDatetime */
     private Timestamp getNextTimeFrom(Exception exception, LocalDateTime dateTime) {
         TimeSpan currentTimeSpan = exception.timeSpan;
         LocalTime checkTime = dateTime.toLocalTime();
@@ -156,6 +181,7 @@ public class ChargingStation {
         return timestamp;
     }
 
+    /** Checks when the next open/closed status will change given a schedule */
     public Timestamp sheduleStatusChange(LocalDateTime dateTime) {
         DayOfWeek checkDay = dateTime.getDayOfWeek();
         LocalTime checkTime= dateTime.toLocalTime();
@@ -201,7 +227,7 @@ public class ChargingStation {
     }
 
 
-    /* Helper method that checks the openingHours of a station given a TimeSpan and LocalTime */
+    /** Checks the openingHours of a station given a TimeSpan and LocalTime */
     private boolean isOpeningHours(TimeSpan timeSpan, LocalTime checkTime) {
         return checkTime.query(temporal -> {
             LocalTime from = timeSpan.getFrom();
@@ -228,17 +254,5 @@ public class ChargingStation {
         return false;
     }
 
-    /*
-         this.exceptions.computeIfAbsent(exception.exceptionType, k -> {
-            List<Exception> newExceptions = new ArrayList<>();
-            newExceptions.add(exception);
-            return newExceptions;
-        });
 
-        this.exceptions.computeIfPresent(exception.exceptionType, (k, v) -> {
-            List<Exception> savedExceptions = exceptions.get(k);
-            savedExceptions.add(exception);
-            return savedExceptions;
-        });
-     */
 }

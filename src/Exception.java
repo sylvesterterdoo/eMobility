@@ -1,3 +1,8 @@
+/**
+ * File: Exception.java
+ * This class models a specific exception type
+ */
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -19,6 +24,7 @@ public class Exception {
         this.exceptionType = exceptionType;
     }
 
+    /** Returns true when a given local date is within the range of the exception date */
     public boolean isDateBetween(LocalDate localDate) {
         if ((localDate.compareTo(fromDate)) >= 0 &&
                 (localDate.compareTo(toDate) <= 0)) {
@@ -27,6 +33,7 @@ public class Exception {
         return false;
     }
 
+    /** Returns true when a given local time is within the range of the exception time */
     public boolean isTimeBetween(LocalTime localTime) {
         if ((localTime.compareTo(timeSpan.getFrom())) >= 0 &&
                 (localTime.compareTo(timeSpan.getTo()) < 0)) {

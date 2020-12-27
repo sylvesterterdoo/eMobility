@@ -1,3 +1,8 @@
+/**
+ * File: Tenant.java
+ * This class models the Tenant entity
+ */
+
 import java.util.*;
 
 public class Tenant {
@@ -16,14 +21,25 @@ public class Tenant {
         this.exceptions = exceptions;
     }
 
+    /**
+     * Adds a store to a the list of stores belonging to a tenant.
+     * @param store
+     */
     public void addStore(Store store) {
         this.stores.add(store);
     }
 
+    /**
+     * @return the tenant exceptions
+     */
     public Map<ExceptionType, List<Exception>> getExceptions() {
         return exceptions;
     }
 
+    /**
+     * Adds a new exception to the tenant
+     * @param exception
+     */
     public void addException(Exception exception) {
         Utilities.addExceptions(exception, this.exceptions);
     }
